@@ -1,6 +1,6 @@
 # Stock Insights AI Agent
 **TL;DR**: LangChain-inspired AI Agent functioning as a complex RAG pipeline producing a single, actionable stock insight report
-## 🚀 Try the Model
+## 🚀 Try the Agent
 ➡️ Web App: [https://armaanwadhwa09.github.io/Stock-Insight-AI-Agent-Frontend/ ](https://armaanwadhwa09.github.io/Stock-Insight-AI-Agent-Frontend/) <br> <br>
 ➡️ Demo Video: [Stock Insight AI Agent Demo](https://drive.google.com/file/d/1uBZXiz9LZj2dPAy0bUF5U5HD1NP3W8fj/view?usp=share_link)
 
