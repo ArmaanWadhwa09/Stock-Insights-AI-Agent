@@ -2,6 +2,15 @@
 **TL;DR**: LangChain-inspired AI Agent functioning as a complex RAG pipeline producing a single, actionable stock insight report
 ## 🚀 Try the Agent
 ➡️ Web App: [https://armaanwadhwa09.github.io/Stock-Insight-AI-Agent-Frontend/ ](https://armaanwadhwa09.github.io/Stock-Insight-AI-Agent-Frontend/) <br> <br>
+> ⚠️ Note: The agent runs on a **subscription-based n8n Cloud workflow**.  
+> It may stop functioning once the subscription or workflow instance is deactivated.  
+> Even if the live agent becomes unavailable, this repository includes:
+> - A complete **demo video** of the agent running end-to-end  
+> - The full **source code** for the frontend  
+> - A detailed **n8n architecture diagram**  
+> - The **workflow JSON export** for reference  
+
+You can still explore the full codebase, reasoning chain, and RAG-based architecture here on GitHub.<br><br>
 ➡️ Demo Video: [Stock Insight AI Agent Demo](https://drive.google.com/file/d/1uBZXiz9LZj2dPAy0bUF5U5HD1NP3W8fj/view?usp=share_link)
 
 *(No installation needed - stock report directly in your mail)*
