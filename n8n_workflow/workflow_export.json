@@ -1,0 +1,778 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/run_stock_insight",
+        "responseMode": "responseNode",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "https://armaanwadhwa09.github.io"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d1a42674-6c81-4715-a45a-e8eef3270b0e",
+      "name": "Webhook",
+      "webhookId": "9edc27dc-6841-44d1-a895-da42303ed0a6"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200,
+          "responseKey": "={\n  \"ticker\": \"{{ $json.body.ticker }}\",\n  \"message\": \"Received ticker successfully\"\n}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        176,
+        0
+      ],
+      "id": "baf9506d-2950-4ba4-9be0-2b60c538b7a1",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "url": "https://financialmodelingprep.com/stable/balance-sheet-statement-growth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "<API_KEY>"
+            },
+            {
+              "name": "symbol",
+              "value": "={{ $json.body.ticker }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        -480
+      ],
+      "id": "52337268-034b-4394-a755-aadee05b9162",
+      "name": "BSgrowth"
+    },
+    {
+      "parameters": {
+        "url": "https://finnhub.io/api/v1/stock/insider-transactions",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "<API_KEY>"
+            },
+            {
+              "name": "symbol",
+              "value": "={{ $json.body.ticker }}"
+            },
+            {
+              "name": "from",
+              "value": "2025-01-01"
+            },
+            {
+              "name": "to",
+              "value": "2025-12-31"
+            },
+            {
+              "name": "limit",
+              "value": "20"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        -320
+      ],
+      "id": "c6bda0fa-b13f-48de-a47f-a9f008220ff3",
+      "name": "insider"
+    },
+    {
+      "parameters": {
+        "url": "https://financialmodelingprep.com/stable/ratios-ttm",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "={{ $json.body.ticker }}"
+            },
+            {
+              "name": "apikey",
+              "value": "<API_KEY>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        -160
+      ],
+      "id": "020b258f-8b03-4753-8d67-1027bccc373a",
+      "name": "ratios"
+    },
+    {
+      "parameters": {
+        "url": "https://stocknewsapi.com/api/v1/stat",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "tickers",
+              "value": "={{ $json.body.ticker }}"
+            },
+            {
+              "name": "date",
+              "value": "last30days"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "token",
+              "value": "<API_KEY>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        16
+      ],
+      "id": "2d246a22-8bed-48b3-b91e-948cf5ac19ac",
+      "name": "Sentiment"
+    },
+    {
+      "parameters": {
+        "url": "=https://query1.finance.yahoo.com/v8/finance/chart/{{ $json.body.ticker }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "range",
+              "value": "5d"
+            },
+            {
+              "name": "interval",
+              "value": "1d"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        192
+      ],
+      "id": "5ea58ded-2898-46e1-997e-54a6448db0d2",
+      "name": "yahoo"
+    },
+    {
+      "parameters": {
+        "url": "https://financialmodelingprep.com/stable/cash-flow-statement",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "<API_KEY>"
+            },
+            {
+              "name": "symbol",
+              "value": "={{ $json.body.ticker }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        368
+      ],
+      "id": "9c3477b3-9951-4677-807e-7090270af659",
+      "name": "cashflow"
+    },
+    {
+      "parameters": {
+        "url": "https://financialmodelingprep.com/stable/profile-cik",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "cik",
+              "value": "={{ $json.cik }}"
+            },
+            {
+              "name": "apikey",
+              "value": "<API_KEY>"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        384
+      ],
+      "id": "66b99a96-7ab6-447e-a300-f1fdfd71454d",
+      "name": "companyprofile"
+    },
+    {
+      "parameters": {
+        "url": "https://financialmodelingprep.com/stable/balance-sheet-statement",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "<API_KEY>"
+            },
+            {
+              "name": "symbol",
+              "value": "={{ $json.body.ticker }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        560
+      ],
+      "id": "7ac3446a-f0f8-4f4a-a48a-4cc2624eb406",
+      "name": "bs"
+    },
+    {
+      "parameters": {
+        "jsCode": "const insiderRaw = $('insider').first().json;\nconst insiderTrading = Array.isArray(insiderRaw) ? insiderRaw : (insiderRaw.data || []);\n\nconst insiderSummary = Array.isArray(insiderTrading) && insiderTrading.length > 0 \n  ? insiderTrading.slice(0, 5).map(trade => \n      `${trade.name || 'Unknown'}: ${trade.transactionCode === 'P' ? 'BOUGHT' : 'SOLD'} ${trade.change ? Math.abs(trade.change) : 'N/A'} shares at $${trade.transactionPrice || 'N/A'} on ${trade.transactionDate || 'N/A'}`\n    ).join('\\n')\n  : 'No recent insider trading data available';\n\nreturn [{\n  json: {\n    insiderSummary: insiderSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -336
+      ],
+      "id": "1f316460-bfda-4afe-a3df-b0d1535afdc7",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ratiosRaw = $('ratios').first().json;\nconst ratios = Array.isArray(ratiosRaw) ? ratiosRaw[0] : (ratiosRaw[0] || ratiosRaw);\n\nconst ratiosSummary = `Profit Margins:\n- Gross Margin: ${ratios.grossProfitMarginTTM ? (ratios.grossProfitMarginTTM * 100).toFixed(2) : 'N/A'}%\n- Net Margin: ${ratios.netProfitMarginTTM ? (ratios.netProfitMarginTTM * 100).toFixed(2) : 'N/A'}%\n- Operating Margin: ${ratios.operatingProfitMarginTTM ? (ratios.operatingProfitMarginTTM * 100).toFixed(2) : 'N/A'}%\n\nValuation Ratios:\n- P/E Ratio: ${ratios.priceToEarningsRatioTTM ? ratios.priceToEarningsRatioTTM.toFixed(2) : 'N/A'}\n- Price-to-Sales: ${ratios.priceToSalesRatioTTM ? ratios.priceToSalesRatioTTM.toFixed(2) : 'N/A'}\n- Price-to-Book: ${ratios.priceToBookRatioTTM ? ratios.priceToBookRatioTTM.toFixed(2) : 'N/A'}\n\nLiquidity & Debt:\n- Current Ratio: ${ratios.currentRatioTTM ? ratios.currentRatioTTM.toFixed(2) : 'N/A'}\n- Debt-to-Equity: ${ratios.debtToEquityRatioTTM ? ratios.debtToEquityRatioTTM.toFixed(2) : 'N/A'}\n- Cash Ratio: ${ratios.cashRatioTTM ? ratios.cashRatioTTM.toFixed(2) : 'N/A'}`;\n\nreturn [{\n  json: {\n    ratiosSummary: ratiosSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        -144
+      ],
+      "id": "e9660b3e-55ff-48f2-b733-116f653ebfec",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ticker = $('Respond to Webhook').first().json.body.ticker;\nconst sentimentRaw = $('Sentiment').first().json;\nconst sentiment = sentimentRaw.data || sentimentRaw;\n\nconst sentimentSummary = sentiment && typeof sentiment === 'object' && Object.keys(sentiment).length > 0 \n  ? Object.entries(sentiment).slice(-7).map(([date, data]) => {\n      const tickerSentiment = data[ticker] || {};\n      return `${date}: Positive: ${tickerSentiment.Positive || 0}, Negative: ${tickerSentiment.Negative || 0}, Score: ${tickerSentiment.sentiment_score || 'N/A'}`;\n    }).join('\\n')\n  : 'No sentiment data available';\n\nreturn [{\n  json: {\n    sentimentSummary: sentimentSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        16
+      ],
+      "id": "8bd0a954-0dda-4abb-814c-072c0a450765",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const yahooRaw = $('yahoo').first().json;\nconst yahooData = yahooRaw.chart?.result?.[0]?.meta || {};\n\nconst yahooSummary = `Current Price: $${yahooData.regularMarketPrice || 'N/A'}\n52-Week Range: ${yahooData.fiftyTwoWeekLow || 'N/A'} - ${yahooData.fiftyTwoWeekHigh || 'N/A'}\nDay High: $${yahooData.regularMarketDayHigh || 'N/A'}\nDay Low: $${yahooData.regularMarketDayLow || 'N/A'}\nVolume Today: ${yahooData.regularMarketVolume ? yahooData.regularMarketVolume.toLocaleString() : 'N/A'}`;\n\nreturn [{\n  json: {\n    yahooSummary: yahooSummary,\n    currentPrice: yahooData.regularMarketPrice,\n    volume: yahooData.regularMarketVolume\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        192
+      ],
+      "id": "0c719775-e449-4845-a5d4-5bb16e028c07",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const profileRaw = $('companyprofile').first().json;\nconst profile = Array.isArray(profileRaw) ? profileRaw[0] : (profileRaw[0] || profileRaw);\n\nconst profileSummary = `Company: ${profile.companyName || 'N/A'}\nIndustry: ${profile.industry || 'N/A'}\nMarket Cap: $${profile.marketCap ? (profile.marketCap / 1e9).toFixed(2) : 'N/A'}B\nDaily Change: ${profile.changePercentage ? profile.changePercentage.toFixed(2) : 'N/A'}%\nAverage Volume: ${profile.averageVolume ? profile.averageVolume.toLocaleString() : 'N/A'}\nDescription: ${profile.description || 'N/A'}`;\n\nreturn [{\n  json: {\n    profileSummary: profileSummary,\n    companyName: profile.companyName,\n    industry: profile.industry,\n    averageVolume: profile.averageVolume\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        384
+      ],
+      "id": "5694c60c-16d2-4694-9f6c-ae5bfac8b5be",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const balanceGrowthRaw = $('BSgrowth').first().json;\nconst balanceGrowth = Array.isArray(balanceGrowthRaw) ? balanceGrowthRaw[0] : (balanceGrowthRaw[0] || balanceGrowthRaw);\n\nconst growthSummary = `Total Assets Growth: ${balanceGrowth.growthTotalAssets ? (balanceGrowth.growthTotalAssets * 100).toFixed(2) : 'N/A'}%\nCash Growth: ${balanceGrowth.growthCashAndCashEquivalents ? (balanceGrowth.growthCashAndCashEquivalents * 100).toFixed(2) : 'N/A'}%\nDebt Growth: ${balanceGrowth.growthTotalDebt ? (balanceGrowth.growthTotalDebt * 100).toFixed(2) : 'N/A'}%\nCurrent Assets Growth: ${balanceGrowth.growthTotalCurrentAssets ? (balanceGrowth.growthTotalCurrentAssets * 100).toFixed(2) : 'N/A'}%\nInventory Growth: ${balanceGrowth.growthInventory ? (balanceGrowth.growthInventory * 100).toFixed(2) : 'N/A'}%`;\n\nreturn [{\n  json: {\n    growthSummary: growthSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -496
+      ],
+      "id": "c6d81ed7-9a1b-44d5-b6a3-9770f8771e20",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const cashFlowRaw = $('cashflow').first().json;\nconst cashFlow = Array.isArray(cashFlowRaw) ? cashFlowRaw[0] : (cashFlowRaw[0] || cashFlowRaw);\n\nconst cashFlowSummary = `Operating Cash Flow: $${cashFlow.netCashProvidedByOperatingActivities ? (cashFlow.netCashProvidedByOperatingActivities / 1e9).toFixed(2) : 'N/A'}B\nFree Cash Flow: $${(cashFlow.netCashProvidedByOperatingActivities && cashFlow.investmentsInPropertyPlantAndEquipment) ? ((cashFlow.netCashProvidedByOperatingActivities + cashFlow.investmentsInPropertyPlantAndEquipment) / 1e9).toFixed(2) : 'N/A'}B\nCapital Expenditures: $${cashFlow.investmentsInPropertyPlantAndEquipment ? (Math.abs(cashFlow.investmentsInPropertyPlantAndEquipment) / 1e9).toFixed(2) : 'N/A'}B\nNet Income: $${cashFlow.netIncome ? (cashFlow.netIncome / 1e9).toFixed(2) : 'N/A'}B\nStock-Based Compensation: $${cashFlow.stockBasedCompensation ? (cashFlow.stockBasedCompensation / 1e9).toFixed(2) : 'N/A'}B`;\n\nreturn [{\n  json: {\n    cashFlowSummary: cashFlowSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1088,
+        208
+      ],
+      "id": "38c93094-41d6-43b2-bcd8-ac8d19863ecb",
+      "name": "Code in JavaScript6"
+    },
+    {
+      "parameters": {
+        "jsCode": "const balanceSheetRaw = $('bs').first().json;\nconst balanceSheet = Array.isArray(balanceSheetRaw) ? balanceSheetRaw[0] : (balanceSheetRaw[0] || balanceSheetRaw);\n\nconst balanceSheetSummary = `Cash & Equivalents: $${balanceSheet.cashAndCashEquivalents ? (balanceSheet.cashAndCashEquivalents / 1e9).toFixed(2) : 'N/A'}B\nTotal Assets: $${balanceSheet.totalAssets ? (balanceSheet.totalAssets / 1e9).toFixed(2) : 'N/A'}B\nTotal Debt: $${(balanceSheet.shortTermDebt && balanceSheet.longTermDebt) ? ((balanceSheet.shortTermDebt + balanceSheet.longTermDebt) / 1e9).toFixed(2) : 'N/A'}B\nShort-Term Debt: $${balanceSheet.shortTermDebt ? (balanceSheet.shortTermDebt / 1e9).toFixed(2) : 'N/A'}B\nLong-Term Debt: $${balanceSheet.longTermDebt ? (balanceSheet.longTermDebt / 1e9).toFixed(2) : 'N/A'}B\nShareholder Equity: $${balanceSheet.totalStockholdersEquity ? (balanceSheet.totalStockholdersEquity / 1e9).toFixed(2) : 'N/A'}B\nCurrent Assets: $${balanceSheet.totalCurrentAssets ? (balanceSheet.totalCurrentAssets / 1e9).toFixed(2) : 'N/A'}B\nCurrent Liabilities: $${balanceSheet.totalCurrentLiabilities ? (balanceSheet.totalCurrentLiabilities / 1e9).toFixed(2) : 'N/A'}B`;\n\nreturn [{\n  json: {\n    balanceSheetSummary: balanceSheetSummary\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        560
+      ],
+      "id": "f39b9008-ca77-47c0-a04c-eafaca16c4e9",
+      "name": "Code in JavaScript7"
+    },
+    {
+      "parameters": {
+        "numberInputs": 8
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1488,
+        -304
+      ],
+      "id": "f7d729e2-3750-4332-ba37-b836e22d782e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ticker = $('Respond to Webhook').first().json.body.ticker;\n\nconst growthSummary = $input.all()[0].json.growthSummary;\nconst insiderSummary = $input.all()[1].json.insiderSummary;\nconst ratiosSummary = $input.all()[2].json.ratiosSummary;\nconst sentimentSummary = $input.all()[3].json.sentimentSummary;\nconst yahooSummary = $input.all()[4].json.yahooSummary;\nconst cashFlowSummary = $input.all()[5].json.cashFlowSummary;\nconst profileSummary = $input.all()[6].json.profileSummary;\nconst balanceSheetSummary = $input.all()[7].json.balanceSheetSummary;\n\nconst finalStructuredData = `\nSTOCK ANALYSIS REQUEST: ${ticker}\n\n=== COMPANY OVERVIEW ===\n${profileSummary}\n\n=== CURRENT MARKET DATA ===\n${yahooSummary}\n\n=== FINANCIAL HEALTH ===\n${ratiosSummary}\n\n=== BALANCE SHEET (Latest Annual) ===\n${balanceSheetSummary}\n\n=== CASH FLOW (Latest Annual) ===\n${cashFlowSummary}\n\n=== GROWTH TRENDS ===\n${growthSummary}\n\n=== INSIDER TRADING (Recent Activity) ===\n${insiderSummary}\n\n=== MARKET SENTIMENT (Last 7 Days) ===\n${sentimentSummary}\n`;\n\nreturn [{\n  json: {\n    ticker: ticker,\n    structuredData: finalStructuredData\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1872,
+        -208
+      ],
+      "id": "226635b3-3aa1-4e17-aa8a-0b187efe5afc",
+      "name": "Code in JavaScript8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ticker = $input.first().json.ticker\nconst structuredData = $input.first().json.structuredData\n\nconst llmPrompt = `You are a financial analyst AI agent specialized in equity research. Your task is to analyze the following multi-source data for ${ticker} and generate a comprehensive stock insight report.\n\nANALYSIS FRAMEWORK:\nFollow this reasoning chain step-by-step:\n\n1. DATA SYNTHESIS: Review all provided data sources (market data, financials, sentiment, insider activity)\n2. FINANCIAL HEALTH ASSESSMENT: Evaluate profitability, liquidity, debt levels, and cash generation\n3. VALUATION ANALYSIS: Assess if the stock is overvalued, fairly valued, or undervalued based on ratios\n4. GROWTH TRAJECTORY: Analyze growth trends in assets, revenue indicators, and operational metrics\n5. RISK IDENTIFICATION: Identify key risks from debt levels, insider selling, negative sentiment, or market conditions\n6. OPPORTUNITY IDENTIFICATION: Highlight positive signals like strong cash flow, insider buying, positive sentiment\n7. SENTIMENT SYNTHESIS: Aggregate market sentiment from news and social sources\n8. FINAL RECOMMENDATION: Provide a clear investment thesis with key drivers and risks\n\n---\nRAW DATA FOR ANALYSIS:\n${structuredData}\n---\n\nOUTPUT REQUIREMENTS:\n\nGenerate a structured report with the following sections:\n\n## EXECUTIVE SUMMARY\n[2-3 sentence overview of investment thesis - bullish, bearish, or neutral with primary reasoning]\n\n## FINANCIAL HEALTH SCORE\nOverall Score: [X/10]\n- Profitability: [Assessment]\n- Liquidity: [Assessment]\n- Leverage: [Assessment]\n- Cash Generation: [Assessment]\n\n## VALUATION ASSESSMENT\nCurrent Valuation: [Overvalued/Fairly Valued/Undervalued]\n- P/E Analysis: [Interpretation relative to industry/historical average]\n- P/S Analysis: [Interpretation]\n- P/B Analysis: [Interpretation]\nKey Insight: [1-2 sentences]\n\n## GROWTH ANALYSIS\nGrowth Momentum: [Strong/Moderate/Weak/Negative]\n- Asset Growth Trend: [Analysis]\n- Cash Position Trend: [Analysis]\n- Debt Trend: [Analysis]\nKey Insight: [1-2 sentences]\n\n## SENTIMENT ANALYSIS\nOverall Sentiment: [Positive/Neutral/Negative]\n- Market Sentiment Score: [Interpretation of recent sentiment trends]\n- Insider Activity Signal: [Bullish/Bearish based on buying/selling]\n- News Sentiment: [If available]\nKey Insight: [1-2 sentences]\n\n## KEY DRIVERS (Top 3 Bullish Factors)\n1. [Driver with supporting data point]\n2. [Driver with supporting data point]\n3. [Driver with supporting data point]\n\n## KEY RISKS (Top 3 Bearish Factors)\n1. [Risk with supporting data point]\n2. [Risk with supporting data point]\n3. [Risk with supporting data point]\n\n## INVESTMENT THESIS\n[3-4 sentences summarizing the complete picture, suitable risk level, and what type of investor this suits]\n\n## CRITICAL METRICS TO MONITOR\n- [Metric 1 and why it matters]\n- [Metric 2 and why it matters]\n- [Metric 3 and why it matters]\n\n---\nREASONING CHAIN INSTRUCTIONS:\n- Use QUANTITATIVE data to support every claim\n- Compare metrics to healthy benchmarks (e.g., Current Ratio > 1.0 is healthy, Debt-to-Equity < 2.0 is manageable)\n- Synthesize MULTIPLE data sources - don't analyze in isolation\n- Identify CONTRADICTIONS (e.g., strong cash flow but high insider selling)\n- Be OBJECTIVE - highlight both positives and negatives\n- Use SPECIFIC numbers from the data provided\n- Tag sentiment as POSITIVE, NEGATIVE, or NEUTRAL with clear reasoning\n\nGenerate the analysis now:`;\n\nreturn [{\n  json: {\n    prompt: llmPrompt,\n    ticker: ticker\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        -160
+      ],
+      "id": "1c6c2ba6-4e60-4756-b408-2ae8e1a92cb6",
+      "name": "Code in JavaScript9"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-nano",
+          "mode": "list",
+          "cachedResultName": "GPT-5-NANO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.prompt }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2416,
+        -144
+      ],
+      "id": "<ID>",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "<API_KEY>",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n_stocks_insights@gmail.com",
+        "toEmail": "={{ $('Webhook').first().json.body.email }}",
+        "subject": "={{ $('Code in JavaScript8').item.json.ticker }} - Stock Insights",
+        "emailFormat": "text",
+        "text": "={{ $json.message.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2768,
+        -144
+      ],
+      "id": "<ID>",
+      "name": "Send email",
+      "webhookId": "05bdd3e7-740f-4f89-9915-0610cc975a01",
+      "credentials": {
+        "smtp": {
+          "id": "<ID>",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Sentiment",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "yahoo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ratios",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "insider",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BSgrowth",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "cashflow",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "bs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sentiment": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "yahoo": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cashflow": {
+      "main": [
+        [
+          {
+            "node": "companyprofile",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "companyprofile": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BSgrowth": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "insider": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ratios": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "bs": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript6": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript7": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 7
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript8": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript9": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "178d50cd-c77c-4f09-9633-7c9f14d21ba5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f0de1c8b6eaee6a934262ea0ca56803768520607f46a39469910f12ea5fa006a"
+  },
+  "id": "<ID>",
+  "tags": []
+}
