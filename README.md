@@ -26,7 +26,8 @@ stock-insight-ai-agent/
 ├── n8n_workflow/
 │   ├── demo_video.md             # Demo video with process flow
 │   ├── workflow_export.js        # Exported n8n workflow (backend logic)
-│   └── architecture_diagram.png  # RAG architecture visualization
+│   ├── architecture_diagram.png  # RAG architecture visualization
+│   └── Output Data               # Example Output for AMZN (26/10/2025)
 │
 └── Code_Nodes/
     ├── Code_Cleaner_1.js         # All the codes to clean api pulls into structured data
