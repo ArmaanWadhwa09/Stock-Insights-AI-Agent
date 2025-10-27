@@ -9,12 +9,12 @@
 3. The agent runs asynchronously via n8n and emails you a complete, data-driven analysis
 ## Tables of Contents 
 - [Introduction](#Introduction)
+- [Architecture Diagram](#architecture-diagram)
 - [The Brain (LLM Reasoning Engine)](#the-brain-llm-reasoning-engine)
 - [Memory (Context & Data Fusion)](#memory-context--data-fusion)
 - [Tools (Retrieval & APIs)](#tools-retrieval--apis)
 - [LangChain Framework](#langchain-framework)
 - [Architecture Design](#architecture-design)
-- [Architecture Diagram](#architecture-diagram)
 - [Frontend (GitHub Pages)](#frontend-github-pages)
 ---
 ## Introduction
@@ -25,6 +25,9 @@ Unlike a basic LLM prompt, this agent:
 2. Performs **data normalization & synthesis**
 3. Runs a **multi-step reasoning chain**
 4. Outputs a **grounded, structured investment report**
+---
+## Architecture Diagram
+![Architecture Diagram](https://github.com/ArmaanWadhwa09/Stock-Insights-AI-Agent/blob/[branch]/image.jpg?raw=true)
 ---
 ## The Brain (LLM Reasoning Engine)
 At its core lies an OpenAI LLM node responsible for **guided reasoning**:
