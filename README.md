@@ -27,7 +27,7 @@ Unlike a basic LLM prompt, this agent:
 4. Outputs a **grounded, structured investment report**
 ---
 ## Architecture Diagram
-![Architecture Diagram](https://github.com/ArmaanWadhwa09/Stock-Insights-AI-Agent/blob/[branch]/image.jpg?raw=true)
+![Architecture Diagram](https://github.com/ArmaanWadhwa09/Stock-Insights-AI-Agent/blob/main/Architecture_Diagram.png?raw=true)
 ---
 ## The Brain (LLM Reasoning Engine)
 At its core lies an OpenAI LLM node responsible for **guided reasoning**:
