@@ -17,6 +17,30 @@ You can still explore the full codebase, reasoning chain, and RAG-based architec
 1. Enter a stock ticker (e.g. `AAPL`)  
 2. Add your email address  
 3. The agent runs asynchronously via n8n and emails you a complete, data-driven analysis
+---
+## Repository Structure
+```
+stock-insight-ai-agent/
+├── README.md
+│
+├── n8n_workflow/
+│   ├── demo_video.md             # Demo video with process flow
+│   ├── workflow_export.js        # Exported n8n workflow (backend logic)
+│   └── architecture_diagram.png  # RAG architecture visualization
+│
+└── Code_Nodes/
+    ├── Code_Cleaner_1.js         # All the codes to clean api pulls into structured data
+    ├── Code_Cleaner_2.js
+    ├── Code_Cleaner_3.js
+    ├── Code_Cleaner_4.js
+    ├── Code_Cleaner_5.js
+    ├── Code_Cleaner_6.js
+    ├── Code_Cleaner_7.js
+    ├── Code_Cleaner_8.js
+    ├── Consolidation.js          # Combines all cleaned data into one structured context
+    └── prompt_orchestration.js   # Defines reasoning chain and LLM orchestration
+```
+---
 ## Tables of Contents 
 - [Introduction](#Introduction)
 - [Architecture Diagram](#architecture-diagram)
