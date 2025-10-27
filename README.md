@@ -55,6 +55,28 @@ This design separates *reasoning* from *retrieval*, ensuring factual consistency
 7. SENTIMENT SYNTHESIS: Aggregate market sentiment from news and social sources
 8. FINAL RECOMMENDATION: Provide a clear investment thesis with key drivers and risks
 ---
+## Memory (Context & Data Fusion)
+In this financial AI Agent, “memory” means contextual awareness and not a long-term database. Because market data changes quickly, the agent only keeps what’s needed for the current analysis.
+
+1. <ins>Operational Memory (The Context Key)</ins>
+
+**What it is:** The agent’s short-term memory that carries the main user request (the stock ticker and email) through the whole workflow.<br> <br>
+**How it works:** When you enter a ticker and email, the Webhook node captures them and passes them to all eight API calls. Every tool the agent uses knows which stock to analyze and where to send the final report.<br><br>
+**Why it matters:** This memory keeps the workflow consistent and ensures all results stay focused on the same company.<br><br>
+
+2. <ins>In-Context Memory (The RAG Context)</ins>
+
+**What it is:** A single, merged data summary that the AI model uses to make its final decisions.<br><br>
+**How it works:** The Data Aggregator Code Node combines cleaned data from all eight sources (Yahoo Finance, FMP Ratios, Insider Activity, etc.) into one text block called structuredData.<br><br>
+**Why it matters:**This compact text gives the model all the key numbers and facts at once, so it can reason and generate a grounded, accurate report. This is the “retrieval” part of the RAG (Retrieval-Augmented Generation) process.<br><br>
+
+3. <ins>Procedural Memory (The Agent’s Blueprint)</ins>
+
+**What it is:** The agent’s internal “instructions” so how it thinks, analyzes, and explains.<br><br>
+**How it works:** A Code Node defines a multi-step Reasoning Chain, telling the AI how to move through the analysis framework (profitability → liquidity → valuation → risk, etc.).<br><br>
+**Why it matters:** This gives the AI structure and discipline. It follows a guided thought process to produce a reliable financial analysis.<br><br>
+
+---
 ## Tools (Retrieval & APIs)
 The agent invokes multiple tools in parallel — forming the **Retrieval** part of RAG:
 | API | Purpose |
@@ -123,9 +145,7 @@ The raw API outputs are cleansed, summarized, and merged into the Agent's workin
   - Action: The LLM Brain executes the Reasoning Chain on the provided data, generating a final, comprehensive, structured investment report.
 - Node: Send Email
   - Action: Takes the final text output from the LLM and delivers it to the user's email address (retrieved from the initial Webhook context), closing the loop.
-
-## Architecture Diagram
-
+---
 ## Frontend (GitHub Pages)
 Made the frontend using ChatGPT model 5 and DeepSeek using the following prompt:
 ```
